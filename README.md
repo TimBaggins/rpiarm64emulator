@@ -16,20 +16,20 @@
 
 #Bash
 
-git clone https://github.com/TimBaggins/rpiarm64emulator.git
-cd rpiarm64emulator
-cp rpiemulatorsetup.sh ~/
+#git clone https://github.com/TimBaggins/rpiarm64emulator.git
+#cd rpiarm64emulator
+#cp rpiemulatorsetup.sh ~/
 
 #Make the script executable:
 
 #Bash
 
-chmod +x raspios-qemu-setup.sh
-Run the script:
+#chmod +x raspios-qemu-setup.sh
+#Run the script:
 
 #Bash
 
-./raspios-qemu-setup.sh
+#./raspios-qemu-setup.sh
 #Follow the on-screen prompts to enter a username and password for the new user.
 
 #The Script (raspios-qemu-setup.sh)
@@ -50,11 +50,11 @@ Run the script:
 
 #Bash
 
-ssh -p 2222 <username>@localhost
+#ssh -p 2222 <username>@localhost
 #Replace <username> with the username you provided when running the script.
 
 #Resources and References
-The process of building and running a RaspiOS VM in QEMU requires several specific steps and file configurations. Much of the methodology for this automated script was inspired by and adapted from the following GitHub Gist, which served as an invaluable resource:
+#The process of building and running a RaspiOS VM in QEMU requires several specific steps and file configurations. Much of the methodology for this automated script was inspired by and adapted from the following GitHub Gist, which served as an invaluable resource:
 
 #Raspbian Buster on QEMU ARM64: https://gist.github.com/cGandom/23764ad5517c8ec1d7cd904b923ad863
 
