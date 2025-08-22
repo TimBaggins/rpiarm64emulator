@@ -1,83 +1,89 @@
-# rpiarm64emulator
+# RaspiOS QEMU Setup
 
-#RaspiOS QEMU Setup
+This project provides a simple, automated script to set up and run a RaspiOS Lite (Buster) virtual machine using QEMU on a host system. The script handles the entire process, including downloading necessary files, compiling a Linux kernel for the ARM64 architecture, and configuring a user with SSH access. This is an excellent tool for creating a lightweight, headless Raspberry Pi environment for development or testing.
 
-#This project provides a simple, automated script to set up and run a RaspiOS Lite (Buster) virtual machine using QEMU on a host system. The script handles the entire process, including downloading necessary files, compiling a Linux kernel for the ARM64 architecture, and configuring a user with SSH access. This is an excellent tool for creating a lightweight, headless Raspberry Pi environment for development or testing.
+##  Environment
 
-#Environment
+This script has been tested and confirmed to work on **WSL (Windows Subsystem for Linux) running Ubuntu 22.04**.
 
-#This script has been tested and confirmed to work on WSL (Windows Subsystem for Linux) running Ubuntu 22.04.
+---
 
-#Getting Started
+##  Getting Started
 
-#Prerequisites
+### Prerequisites
 
-#WSL (Windows Subsystem for Linux) with Ubuntu 22.04.
+* **WSL (Windows Subsystem for Linux)** with **Ubuntu 22.04**.
+* Basic command-line tools and permissions to install software.
 
-#Basic command-line tools and permissions to install software.
+### Step 1: Run the Initial Setup Script
 
-#How to Run the Script
+This script performs all the one-time setup tasks.
 
-#Clone this repository to your local machine:
+1.  **Clone this repository** to your local machine and move the applicable scripts to the home directory of your WSL:
 
-#Bash
+    ```bash
+    git clone [https://github.com/](https://github.com/)TimBaggins/rpiarm64emulator.git
+    cd rpiarm64emulator
+    cp rpiemulator.sh run_raspios_qemu.sh ~/
+    cd ~/
+    ```
 
-#git clone https://github.com/TimBaggins/rpiarm64emulator.git
+2.  **Make the script executable**:
 
-#cd rpiarm64emulator
+    ```bash
+    chmod +x rpiemulatorsetup.sh
+    ```
 
-#cp rpiemulatorsetup.sh ~/
+3.  **Run the script**:
 
-#Change back to your home directory as the script calls for the file to execute from there.
+    ```bash
+    ./rpiemulatorsetup.sh
+    ```
 
-#cd ~
+4.  Follow the on-screen prompts to enter a username and password for the new user. The script will take some time to download and compile the necessary files.
 
-#Make the script executable:
+---
 
-#Bash
+### Step 2: Run the Emulator
 
-#chmod +x raspios-qemu-setup.sh
+Once the initial setup is complete, you can use a separate script to launch the emulator and continue working on your persistent image.
 
-#Run the script:
+1.  **Make the launch script executable**:
 
-#Bash
+    ```bash
+    chmod +x run_raspios_qemu.sh
+    ```
 
-#./raspios-qemu-setup.sh
+2.  **Launch the emulator**:
 
-#Follow the on-screen prompts to enter a username and password for the new user.
+    ```bash
+    ./run_raspios_qemu.sh
+    ```
 
-#The Script (raspios-qemu-setup.sh)
+---
 
-#The script automates the entire setup process. Here is a breakdown of what it accomplishes:
+##  The Scripts
 
-#Installs Dependencies: It first uses sudo apt-get to install all necessary packages, including QEMU and the cross-compilation toolchain for ARM64.
+### `raspios-qemu-setup.sh`
 
-#Downloads and Extracts RaspiOS: It downloads the RaspiOS Lite ARM64 disk image directly from the official Raspberry Pi website and extracts it.
+This script automates the entire one-time setup process. Here is a breakdown of what it accomplishes:
 
-#Compiles the Kernel: It fetches a stable Linux kernel tarball from kernel.org and compiles it for the arm64 architecture, a crucial step for the QEMU emulation.
+1.  **Installs Dependencies**: It first uses `sudo apt-get` to install all necessary packages, including QEMU and the cross-compilation toolchain for ARM64.
+2.  **Downloads and Extracts RaspiOS**: It downloads the RaspiOS Lite ARM64 disk image directly from the official Raspberry Pi website and extracts it.
+3.  **Compiles the Kernel**: It fetches a stable Linux kernel tarball from `kernel.org` and compiles it for the `arm64` architecture, a crucial step for the QEMU emulation.
+4.  **Configures the Image**: It mounts the downloaded disk image, adds a new user with the password you provide, and enables SSH access.
+5.  **Starts QEMU**: Finally, it launches the virtual machine using QEMU, configured to use the newly compiled kernel. It also sets up network port forwarding, allowing you to connect via SSH.
 
-#Configures the Image: It mounts the downloaded disk image, adds a new user with the password you provide, and enables SSH access.
+### `run_raspios_qemu.sh`
 
-#Starts QEMU: Finally, it launches the virtual machine using QEMU, configured to use the newly compiled kernel. It also sets up network port forwarding, allowing you to connect via SSH.
+This script is designed for recurring use. It bypasses all the setup steps and directly launches the QEMU emulator, loading the pre-configured disk image. This allows you to quickly continue your work where you left off.
 
-#Connecting to the VM
+---
 
-#After the QEMU window appears and the virtual machine has booted, you can connect to it via SSH from a new terminal using the following command:
+##  Connecting to the VM
 
-#Bash
+After the QEMU window appears and the virtual machine has booted, you can connect to it via SSH from a new terminal using the following command:
 
-#ssh -p 2222 <username>@localhost
-
-#Replace <username> with the username you provided when running the script.
-
-#Resources and References
-
-#The process of building and running a RaspiOS VM in QEMU requires several specific steps and file configurations. Much of the methodology for this automated script was inspired by and adapted from the following GitHub Gist, which served as an invaluable resource:
-
-#Raspbian Buster on QEMU ARM64: https://gist.github.com/cGandom/23764ad5517c8ec1d7cd904b923ad863
-
-#The script also relies on these external resources for the necessary files:
-
-#RaspiOS Lite ARM64 Image: https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2020-08-24/2020-08-20-raspios-buster-arm64-lite.zip
-
-#Linux Kernel Tarball: https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.34.tar.xz
+```bash
+ssh -p 2222 <username>@localhost
+```
